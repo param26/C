@@ -45,6 +45,7 @@ ld di(ld x1, ld y1, ld x2, ld y2, ld speed) {
 	ret = db/speed;
 	return ret;
 }
+//get the time between points with speed of sp
 ld di(pair<ld,ld> &a, pair<ld,ld> &b, ld sp) {
 	ld x1 = a.first, y1 = a.second, x2 = b.first, y2 = b.second;
 	return di(x1,y1,x2,y2, sp);
@@ -58,6 +59,7 @@ void dfs(int u) {
 		}
 	}
 }
+//finding components in case we have to walk between stations on foot
 void cdfs(int u) {
 	if(visited[u]) return ;
 	visited[u] = 1;
@@ -68,6 +70,7 @@ void cdfs(int u) {
 	}
 	tcomp.push_back(u);
 }
+//dijkstra
 void dij(int u) {
 	d[u] = 0;
 	//visited[u] = 1;
@@ -102,6 +105,7 @@ int main() {
 	}
 	int u, v;
 	cin >> u >> v;
+	//station to station
 	while(u != 0) {
 		//cin >> v;
 		vertices[u].push_back(make_pair(v,di(stations[u], stations[v], under)));
@@ -119,6 +123,7 @@ int main() {
 	
 	debug()<<imie(comp);
 	int m = comp.size();
+	//station to station but on foot
 	if(m > 1) {
 		for(int i=0;i<m;i++) {
 			for(int j=i+1;j<m;j++) {
@@ -149,6 +154,7 @@ int main() {
 	fromm = coord[from], too = coord[to];
 	vertices[fromm].push_back(make_pair(too, di(from, to, foot)));
 	vertices[too].push_back(make_pair(fromm, di(from, to, foot)));
+	//station to start and stations to end on foot
 	for(int i=1;i<=n;i++) {
 		vertices[fromm].push_back({i, di(from, stations[i], foot)});
 		vertices[i].push_back({fromm, di(from, stations[i], foot)});
@@ -190,7 +196,7 @@ int main() {
 	}
 	vector<int> out;
 	for(auto it:aa) {
-		if(it == too && f2 == 0) out.push_back(it);
+		if(it == too && f2 == 0) out.push_back(it); //incase stations overlap
 		else if(it == fromm && f1 == 0) out.push_back(it);
 		else if(it!=fromm && it!=too) out.push_back(it);
 	}
